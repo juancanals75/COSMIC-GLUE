@@ -1,0 +1,28 @@
+h1 {
+    margin: 0;
+    color: darkred;
+    text-align: center;
+}
+
+.row:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.column {
+    float: left;
+}
+
+.column.left {
+    width: 800px;
+}
+
+.column.right {
+    width: 30%;
+    text-align: right;
+    float: right;
+}
+.column.right a {
+    padding-right: 10px;
+}
