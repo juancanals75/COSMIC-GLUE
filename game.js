@@ -82,10 +82,10 @@ function update () {
     });
 
 // Single fire on right arrow
-    if (cursors.right.isDown && !lastFired) {
+    if (cursors.space.isDown && !lastFired) {
         lastFired = true;
         shoot(player);
-    } else if (cursors.right.isUp && lastFired) {
+    } else if (cursors.space.isUp && lastFired) {
         lastFired = false;
     }
 
