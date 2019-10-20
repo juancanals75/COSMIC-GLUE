@@ -1,7 +1,10 @@
+const canvasWidth = 800;
+const canvasHeight = 600;
+
 var config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: canvasWidth,
+    height: canvasHeight,
     physics: {
         default: 'arcade',
         arcade: {
@@ -14,6 +17,8 @@ var config = {
         update: update
     }
 };
+
+
 
 var game = new Phaser.Game(config);
 
@@ -32,7 +37,7 @@ function create () {
     // Group to hold lasers
     lasers = this.physics.add.group({
         defaultKey: 'star',
-        maxSize: 80
+        maxSize: 10
     });
 
 
@@ -42,6 +47,16 @@ function create () {
 
 function update () {
 
+// Check if a laser is out of bounds to re-use it
+    lasers.children.each(function(l) {
+        if (l.active) {
+            if (l.x > canvasWidth) {
+                l.setActive(false);
+            }
+        }
+    });
+
+// SHOOT on right arrow
     if (cursors.right.isDown) {
         shoot(player);
     }
@@ -55,6 +70,8 @@ function update () {
         }
     }
 
+
+// Movement Controls
     if (cursors.up.isDown) {
         player.setVelocityY(-300);
     }
