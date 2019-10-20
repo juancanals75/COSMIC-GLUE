@@ -24,6 +24,7 @@ var game = new Phaser.Game(config);
 
 var player;
 var lasers;
+var lastFired = false;
 
 function preload () {
     this.load.image('star', '/tutorial-assets/star.png')
@@ -58,7 +59,21 @@ function update () {
 
 // SHOOT on right arrow
     if (cursors.right.isDown) {
+        if (!lastFired) {
+            touchDown();
+        }
+    } else if (cursors.right.isUp) {
+        if (lastFired) {
+            touchUp();
+        }
+    }
+
+    function touchDown() {
+        lastFired = true;
         shoot(player);
+    }
+    function touchUp() {
+        lastFired = false;
     }
 
     function shoot(origin) {
@@ -81,4 +96,8 @@ function update () {
     else {
         player.setVelocityY(0);
     }
+}
+
+function render() {
+    game.debug.text('Cosmic Glue - PROTOTYPE', 10, 30);
 }
