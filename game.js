@@ -26,6 +26,9 @@ var playerSpeed = 500;
 var lasers;
 var laserSpeed = 900;
 var lastFired = false;
+var junkGroup;
+var junkDisplay;
+var junkSpeed = 300;
 
 
 
@@ -48,6 +51,16 @@ function create () {
         maxSize: 10
     });
 
+    // Group for the space junk
+    junkGroup = this.physics.add.group();
+
+    var junkDisplay = setInterval(junkShow, 1500);
+    function junkShow() {
+        var randomY = Phaser.Math.Between(0, canvasHeight);
+        var junk = junkGroup.create(canvasWidth, randomY, 'star')
+        junk.body.velocity.x = -junkSpeed;
+    }
+
 
     // Keyboard Controls
     cursors = this.input.keyboard.createCursorKeys();
@@ -56,6 +69,8 @@ function create () {
 
 
 function update () {
+
+
 
 // Check if a laser is out of bounds to re-use it
     lasers.children.each(function(l) {
@@ -75,7 +90,7 @@ function update () {
     }
 
     function shoot(origin) {
-        var laser = this.lasers.get(player.x, player.y);
+        var laser = this.lasers.get(origin.x, origin.y);
         if (laser) {
             laser.setActive(true);
             laser.setVisible(true);
