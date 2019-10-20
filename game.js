@@ -30,7 +30,7 @@ var lastFired = false;
 
 
 function preload () {
-    this.load.image('star', '/tutorial-assets/star.png')
+    this.load.image('star', '/tutorial-assets/star.png');
 }
 
 
