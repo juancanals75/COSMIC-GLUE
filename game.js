@@ -32,7 +32,7 @@ function create () {
     // Group to hold lasers
     lasers = this.physics.add.group({
         defaultKey: 'star',
-        maxSize: 10
+        maxSize: 80
     });
 
 
@@ -41,6 +41,20 @@ function create () {
 }
 
 function update () {
+
+    if (cursors.right.isDown) {
+        shoot(player);
+    }
+
+    function shoot(origin) {
+        var laser = this.lasers.get(player.x, player.y);
+        if (laser) {
+            laser.setActive(true);
+            laser.setVisible(true);
+            laser.body.velocity.x = 600;
+        }
+    }
+
     if (cursors.up.isDown) {
         player.setVelocityY(-300);
     }
