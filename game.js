@@ -52,7 +52,9 @@ function create () {
     });
 
     // Group for the space junk
-    junkGroup = this.physics.add.group();
+    junkGroup = this.physics.add.group({
+        maxSize: 4
+    });
 
     var junkDisplay = setInterval(junkShow, 1500);
     function junkShow() {
@@ -70,7 +72,14 @@ function create () {
 
 function update () {
 
+    if (cursors.shift.isDown) {
+        if (this.scene.isPaused) {
+            this.scene.resume();
+        } else if (this.scene.isActive) {
+            this.scene.pause();
+        }
 
+    }
 
 // Check if a laser is out of bounds to re-use it
     lasers.children.each(function(l) {
@@ -84,13 +93,13 @@ function update () {
 // Single fire on right arrow
     if (cursors.space.isDown && !lastFired) {
         lastFired = true;
-        shoot(player);
+        shoot();
     } else if (cursors.space.isUp && lastFired) {
         lastFired = false;
     }
 
-    function shoot(origin) {
-        var laser = this.lasers.get(origin.x, origin.y);
+    function shoot() {
+        var laser = this.lasers.get(player.x, player.y);
         if (laser) {
             laser.setActive(true);
             laser.setVisible(true);
@@ -114,5 +123,5 @@ function update () {
 
 
 function render() {
-    game.debug.text('Cosmic Glue - PROTOTYPE', 10, 30);
+
 }
