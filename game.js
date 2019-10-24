@@ -21,8 +21,7 @@ var config = {
 let game = new Phaser.Game(config);
 
 // Game Variables
-var player;
-var playerSpeed = 500;
+
 var lasers;
 var laserSpeed = 900;
 var lastFired = false;
@@ -41,9 +40,7 @@ function preload () {
 
 function create () {
 
-    // Placeholder for player
-    player = this.physics.add.image(150, 300, 'star');
-    player.setCollideWorldBounds();
+
 
     // Group to hold lasers
     lasers = this.physics.add.group({
