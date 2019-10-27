@@ -1,10 +1,11 @@
 const canvasWidth = 800;
 const canvasHeight = 600;
 
-var config = {
+const config = {
     type: Phaser.AUTO,
     width: canvasWidth,
     height: canvasHeight,
+    backgroundColor: 0x333333,
     physics: {
         default: 'arcade',
         arcade: {
@@ -18,7 +19,7 @@ var config = {
     }
 };
 
-let game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
 
 // Game Variables
 var player;
@@ -41,9 +42,9 @@ function preload () {
 
 function create () {
 
-    // Placeholder for player
     player = this.physics.add.image(150, 300, 'star');
     player.setCollideWorldBounds();
+
 
     // Group to hold lasers
     lasers = this.physics.add.group({
@@ -52,12 +53,14 @@ function create () {
     });
 
     // Group for the space junk
-    junkGroup = this.physics.add.group();
+    junkGroup = this.physics.add.group({
+        maxSize: 4
+    });
 
     var junkDisplay = setInterval(junkShow, 1500);
     function junkShow() {
         var randomY = Phaser.Math.Between(0, canvasHeight);
-        var junk = junkGroup.create(canvasWidth, randomY, 'star')
+        var junk = junkGroup.create(canvasWidth, randomY, 'star');
         junk.body.velocity.x = -junkSpeed;
     }
 
@@ -69,7 +72,6 @@ function create () {
 
 
 function update () {
-
 
 
 // Check if a laser is out of bounds to re-use it
@@ -84,13 +86,13 @@ function update () {
 // Single fire on right arrow
     if (cursors.space.isDown && !lastFired) {
         lastFired = true;
-        shoot(player);
+        shoot();
     } else if (cursors.space.isUp && lastFired) {
         lastFired = false;
     }
 
-    function shoot(origin) {
-        var laser = this.lasers.get(origin.x, origin.y);
+    function shoot() {
+        var laser = this.lasers.get(player.x, player.y);
         if (laser) {
             laser.setActive(true);
             laser.setVisible(true);
@@ -114,5 +116,5 @@ function update () {
 
 
 function render() {
-    game.debug.text('Cosmic Glue - PROTOTYPE', 10, 30);
+
 }
