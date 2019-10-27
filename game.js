@@ -60,12 +60,11 @@ function create () {
     var junkDisplay = setInterval(junkShow, 1500);
     function junkShow() {
         var randomY = Phaser.Math.Between(0, canvasHeight);
-        var junk = junkGroup.create(canvasWidth, randomY, 'star');
-        junk.body.velocity.x = -junkSpeed;
+        var junk = junkGroup.create(canvasWidth, randomY, 'star').setVelocity(-junkSpeed, 0);
     }
 
     // Colliders
-    this.physics.add.collider(lasers, junkGroup, junkDestroy, null, this)
+    this.physics.add.collider(lasers, junkGroup, junkDestroy, null, this);
 
     // Keyboard Controls
     cursors = this.input.keyboard.createCursorKeys();
@@ -75,8 +74,14 @@ function create () {
 
 function update () {
 
+    // Checks to remove junk out of BOUNDS
+    junkGroup.children.each(junk => {
+      if (junk.x < 0) {
+        junk.destroy()
+      }
+    })
 
-// Check if a laser is out of bounds to re-use it
+    // Check if a laser is out of bounds to re-use it
     lasers.children.each(function(l) {
         if (l.active) {
             if (l.x > canvasWidth) {
@@ -85,7 +90,7 @@ function update () {
         }
     });
 
-// Single fire on right arrow
+    // Single fire on right arrow
     if (cursors.space.isDown && !lastFired) {
         lastFired = true;
         shoot();
@@ -93,17 +98,8 @@ function update () {
         lastFired = false;
     }
 
-    function shoot() {
-        var laser = this.lasers.get(player.x, player.y);
-        if (laser) {
-            laser.setActive(true);
-            laser.setVisible(true);
-            laser.body.velocity.x = laserSpeed;
-        }
-    }
 
-
-// Movement Controls
+    // Movement Controls
     if (cursors.up.isDown) {
         player.setVelocityY(-playerSpeed);
     }
@@ -115,9 +111,17 @@ function update () {
     }
 }
 
+function shoot() {
+    var laser = this.lasers.get(player.x, player.y);
+    if (laser) {
+        laser.setActive(true);
+        laser.setVisible(true);
+        laser.setVelocity(laserSpeed, 0);
+    }
+}
 
 
 function junkDestroy(laser, junk) {
-    laser.disableBody(true, true)
-    junk.disableBody(true, true)
+    laser.disableBody(true, true);
+    junk.disableBody(true, true);
 }
