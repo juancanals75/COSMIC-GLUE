@@ -64,6 +64,8 @@ function create () {
         junk.body.velocity.x = -junkSpeed;
     }
 
+    // Colliders
+    this.physics.add.collider(lasers, junkGroup, junkDestroy, null, this)
 
     // Keyboard Controls
     cursors = this.input.keyboard.createCursorKeys();
@@ -115,6 +117,7 @@ function update () {
 
 
 
-function render() {
-
+function junkDestroy(laser, junk) {
+    laser.disableBody(true, true)
+    junk.disableBody(true, true)
 }
