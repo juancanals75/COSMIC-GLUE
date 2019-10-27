@@ -123,5 +123,5 @@ function shoot() {
 
 function junkDestroy(laser, junk) {
     laser.disableBody(true, true);
-    junk.disableBody(true, true);
+    junk.destroy();
 }
