@@ -1,10 +1,11 @@
 const canvasWidth = 800;
 const canvasHeight = 600;
 
-var config = {
+const config = {
     type: Phaser.AUTO,
     width: canvasWidth,
     height: canvasHeight,
+    backgroundColor: 0x333333,
     physics: {
         default: 'arcade',
         arcade: {
@@ -18,10 +19,11 @@ var config = {
     }
 };
 
-let game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
 
 // Game Variables
-
+var player;
+var playerSpeed = 500;
 var lasers;
 var laserSpeed = 900;
 var lastFired = false;
@@ -40,6 +42,8 @@ function preload () {
 
 function create () {
 
+    player = this.physics.add.image(150, 300, 'star');
+    player.setCollideWorldBounds();
 
 
     // Group to hold lasers
@@ -56,7 +60,7 @@ function create () {
     var junkDisplay = setInterval(junkShow, 1500);
     function junkShow() {
         var randomY = Phaser.Math.Between(0, canvasHeight);
-        var junk = junkGroup.create(canvasWidth, randomY, 'star')
+        var junk = junkGroup.create(canvasWidth, randomY, 'star');
         junk.body.velocity.x = -junkSpeed;
     }
 
@@ -69,14 +73,6 @@ function create () {
 
 function update () {
 
-    if (cursors.shift.isDown) {
-        if (this.scene.isPaused) {
-            this.scene.resume();
-        } else if (this.scene.isActive) {
-            this.scene.pause();
-        }
-
-    }
 
 // Check if a laser is out of bounds to re-use it
     lasers.children.each(function(l) {
