@@ -48,8 +48,7 @@ function create () {
 
     // Group to hold lasers
     lasers = this.physics.add.group({
-        defaultKey: 'star',
-        maxSize: 10
+        defaultKey: 'star'
     });
 
     // Group for the space junk
@@ -60,7 +59,7 @@ function create () {
     var junkDisplay = setInterval(junkShow, 1500);
     function junkShow() {
         var randomY = Phaser.Math.Between(0, canvasHeight);
-        var junk = junkGroup.create(canvasWidth, randomY, 'star').setVelocity(-junkSpeed, 0);
+        junkGroup.create(canvasWidth, randomY, 'star').setVelocity(-junkSpeed, 0);
     }
 
     // Colliders
@@ -82,10 +81,10 @@ function update () {
     })
 
     // Check if a laser is out of bounds to re-use it
-    lasers.children.each(function(l) {
-        if (l.active) {
-            if (l.x > canvasWidth) {
-                l.setActive(false);
+    lasers.children.each(laser => {
+        if (laser) {
+            if (laser.x > canvasWidth) {
+                laser.destroy();
             }
         }
     });
@@ -93,7 +92,8 @@ function update () {
     // Single fire on right arrow
     if (cursors.space.isDown && !lastFired) {
         lastFired = true;
-        shoot();
+        lasers.create(player.x, player.y, 'star').setVelocityX(laserSpeed)
+        // shoot();
     } else if (cursors.space.isUp && lastFired) {
         lastFired = false;
     }
@@ -111,14 +111,14 @@ function update () {
     }
 }
 
-function shoot() {
-    var laser = this.lasers.get(player.x, player.y);
-    if (laser) {
-        laser.setActive(true);
-        laser.setVisible(true);
-        laser.setVelocity(laserSpeed, 0);
-    }
-}
+// function shoot() {
+//     var laser = this.lasers.get(player.x, player.y);
+//     if (laser) {
+//         laser.setActive(true);
+//         laser.setVisible(true);
+//         laser.setVelocity(laserSpeed, 0);
+//     }
+// }
 
 
 function junkDestroy(laser, junk) {
