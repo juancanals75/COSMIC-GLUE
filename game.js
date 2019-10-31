@@ -30,6 +30,8 @@ var lastFired = false;
 var junkGroup;
 var junkDisplay;
 var junkSpeed = 300;
+var paused = false;
+var debugText = '';
 
 
 
@@ -64,9 +66,13 @@ function create () {
 
     // Colliders
     this.physics.add.collider(lasers, junkGroup, junkDestroy, null, this);
+    this.physics.add.collider(player, junkGroup, playerKill, null, this);
 
     // Keyboard Controls
     cursors = this.input.keyboard.createCursorKeys();
+
+    // Debug text
+    debugText = this.add.text(20, 20, "DEBUG TEXT")
 }
 
 
@@ -76,7 +82,7 @@ function update () {
     // Checks to remove junk out of BOUNDS
     junkGroup.children.each(junk => {
       if (junk.x < 0) {
-        junk.destroy()
+        junk.destroy();
       }
     })
 
@@ -88,6 +94,14 @@ function update () {
             }
         }
     });
+
+    if (cursors.shift.isDown && !paused) {
+        this.physics.pause();
+        paused = true;
+    } else if (cursors.shift.isDown && paused) {
+        this.physics.resume();
+        paused = false;
+    }
 
     // Single fire on right arrow
     if (cursors.space.isDown && !lastFired) {
@@ -109,19 +123,22 @@ function update () {
     else {
         player.setVelocityY(0);
     }
+
+    // D-EBUG TEXT
+    debugText.setText([
+      'Lasers: ' + lasers.countActive(),
+      'Junk: ' + junkGroup.countActive(),
+      'Paused: ' + `${paused}`
+    ])
 }
 
-// function shoot() {
-//     var laser = this.lasers.get(player.x, player.y);
-//     if (laser) {
-//         laser.setActive(true);
-//         laser.setVisible(true);
-//         laser.setVelocity(laserSpeed, 0);
-//     }
-// }
 
+function playerKill(player, junk) {
+    this.physics.pause();
+    player.setTint(0xff0000);
+}
 
 function junkDestroy(laser, junk) {
-    laser.disableBody(true, true);
+    laser.destroy();
     junk.destroy();
 }
