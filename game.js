@@ -58,10 +58,12 @@ function create () {
         maxSize: 4
     });
 
-    var junkDisplay = setInterval(junkShow, 1500);
-    function junkShow() {
+    if (junkGroup.countActive() < 5) {
+      var junkDisplay = setInterval(junkShow, 1500);
+      function junkShow() {
         var randomY = Phaser.Math.Between(0, canvasHeight);
         junkGroup.create(canvasWidth, randomY, 'star').setVelocity(-junkSpeed, 0);
+      }
     }
 
     // Colliders
