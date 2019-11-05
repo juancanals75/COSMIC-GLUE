@@ -5,7 +5,6 @@ const config = {
     type: Phaser.AUTO,
     width: canvasWidth,
     height: canvasHeight,
-    backgroundColor: 0x333333,
     physics: {
         default: 'arcade',
         arcade: {
@@ -32,11 +31,16 @@ var junkDisplay;
 var junkSpeed = 300;
 var paused = false;
 var debugText = '';
+var backgroundSprite;
 
 
 
 function preload () {
     this.load.image('star', '/tutorial-assets/star.png');
+    this.load.image('player', '/assets/placeholders/player.png');
+    this.load.image('laser', '/assets/placeholders/laser.png');
+    this.load.image('junk', '/assets/placeholders/meteorBrown_med1.png');
+    this.load.image('background', '/assets/placeholders/blue.png');
 }
 
 
@@ -44,25 +48,28 @@ function preload () {
 
 function create () {
 
-    player = this.physics.add.image(150, 300, 'star');
+    backgroundSprite = this.add.tileSprite(400, 300, canvasWidth, canvasHeight, "background");
+
+    player = this.physics.add.image(150, 300, 'player');
     player.setCollideWorldBounds();
 
 
     // Group to hold lasers
     lasers = this.physics.add.group({
-        defaultKey: 'star'
+        defaultKey: 'laser'
     });
 
     // Group for the space junk
     junkGroup = this.physics.add.group({
-        maxSize: 4
+        maxSize: 4,
+        defaultKey: 'junk'
     });
 
     if (junkGroup.countActive() < 5) {
       var junkDisplay = setInterval(junkShow, 1500);
       function junkShow() {
         var randomY = Phaser.Math.Between(0, canvasHeight);
-        junkGroup.create(canvasWidth, randomY, 'star').setVelocity(-junkSpeed, 0);
+        junkGroup.create(canvasWidth, randomY).setVelocity(-junkSpeed, 0);
       }
     }
 
@@ -74,7 +81,7 @@ function create () {
     cursors = this.input.keyboard.createCursorKeys();
 
     // Debug text
-    debugText = this.add.text(20, 20, "DEBUG TEXT")
+    debugText = this.add.text(20, 20, "DEBUG TEXT");
 }
 
 
@@ -105,11 +112,10 @@ function update () {
         paused = false;
     }
 
-    // Single fire on right arrow
+    // Single fire on space
     if (cursors.space.isDown && !lastFired) {
         lastFired = true;
-        lasers.create(player.x, player.y, 'star').setVelocityX(laserSpeed)
-        // shoot();
+        lasers.create(player.x, player.y).setVelocityX(laserSpeed)
     } else if (cursors.space.isUp && lastFired) {
         lastFired = false;
     }
