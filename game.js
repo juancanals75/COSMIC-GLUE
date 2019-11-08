@@ -37,7 +37,7 @@ var backgroundSprite;
 
 function preload () {
     this.load.image('star', '/tutorial-assets/star.png');
-    this.load.image('player', '../assets/placeholders/player.png');
+    this.load.image('player', '/COSMIC-GLUE/assets/placeholders/player.png');
     this.load.image('laser', '/assets/placeholders/laser.png');
     this.load.image('junk', '/assets/placeholders/meteorBrown_med1.png');
     this.load.image('background', '/assets/placeholders/blue.png');
