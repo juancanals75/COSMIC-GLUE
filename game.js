@@ -36,11 +36,11 @@ var backgroundSprite;
 
 
 function preload () {
-    this.load.image('star', '/tutorial-assets/star.png');
+    this.load.image('star', '/COSMIC-GLUE/tutorial-assets/star.png');
     this.load.image('player', '/COSMIC-GLUE/assets/placeholders/player.png');
-    this.load.image('laser', '/assets/placeholders/laser.png');
-    this.load.image('junk', '/assets/placeholders/meteorBrown_med1.png');
-    this.load.image('background', '/assets/placeholders/blue.png');
+    this.load.image('laser', '/COSMIC-GLUE/assets/placeholders/laser.png');
+    this.load.image('junk', '/COSMIC-GLUE/assets/placeholders/meteorBrown_med1.png');
+    this.load.image('background', '/COSMIC-GLUE/assets/placeholders/blue.png');
 }
 
 
